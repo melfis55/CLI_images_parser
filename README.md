@@ -1,6 +1,6 @@
 Small Cli Parser
 
--Clone or download repository.
+-Clone or download repository(You must have PHP on your system).
 
 -Change directory to cli\bin.
 
