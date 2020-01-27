@@ -1,6 +1,6 @@
 Small Cli Parser
 
--Clone or download repository.
+-Clone or download repository(You must have PHP on your system).
 
 -Change directory to cli\bin.
 
@@ -8,6 +8,6 @@ Small Cli Parser
 
 -Write in command line "php cli.php parse -url=http://example.com" to parse all images from the site.
 
--Write im command line "php cli.php report -url=http://example.com" to see the result of parse.
+-Write in command line "php cli.php report -url=http://example.com" to see the result of parse.
 
 ENJOY :)
