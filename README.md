@@ -2,7 +2,9 @@ Small Cli Parser
 
 -Clone or download repository(You must have PHP on your system).
 
--Change directory to cli\bin.
+-Change directory to cli.
+
+-run in command line "Composer install".
 
 -Write in command line "php cli.php help" to see all commands.
 
