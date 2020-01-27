@@ -1,0 +1,18 @@
+{
+    "name": "melfis/cli",
+    "authors": [
+        {
+            "name": "melfis",
+            "email": "7487487@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-curl": "*"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "src\\": "src"
+        }
+    }
+}

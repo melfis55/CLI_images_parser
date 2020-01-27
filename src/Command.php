@@ -1,8 +1,8 @@
 <?php
+namespace src;
 
 abstract class Command
 {
-    /** @var array */
     private $params;
 
     public function __construct($params)
@@ -31,7 +31,7 @@ abstract class Command
     protected function ensureParamExists($paramName)
     {
         if (!isset($this->params[$paramName])) {
-            throw new Exception('Param with name "' . $paramName . '" is not set! Please write "php cli.php help".');
+            throw new \Exception('Param with name "' . $paramName . '" is not set! Please write "php cli.php help".');
         }
     }
 }

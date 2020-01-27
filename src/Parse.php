@@ -1,8 +1,12 @@
 <?php
+namespace src;
 
+use yii\db\Exception;
 
 class Parse extends Command
 {
+    const USERAGENT = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11";
+
     public $allLinks = [];
     public $allImages = [];
     public $wasLinks = [];
@@ -24,15 +28,12 @@ class Parse extends Command
     }
 
     public function getContent($url) {
-        $ch = curl_init ();
+        $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
-            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11",
-            CURLOPT_HEADER => 0,
-            CURLOPT_FOLLOWLOCATION => 1,
-            CURLOPT_MAXREDIRS => 1,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_BINARYTRANSFER => 1,
+            CURLOPT_USERAGENT => self::USERAGENT,
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => true,
         ]);
 
         $content = curl_exec($ch);
@@ -46,10 +47,16 @@ class Parse extends Command
         $this->ensureParamExists('url');
     }
 
+    public function notValidUrl() {
+        return !filter_var($this->getParam('url'), FILTER_VALIDATE_URL);
+    }
     public function execute() {
+        if ($this->notValidUrl()) {
+            throw new \Exception('Url ' . $this->getParam('url') . ' not valid');
+        }
+
         if(!($this->getContent($this->getParam('url')))) {
-            echo "Wrong site, or check the link." . "\n";
-            exit;
+            throw new \Exception('Url ' . $this->getParam('url') . ' don\'t have content');
         }
 
         $this->parser($this->getParam('url'));
@@ -61,16 +68,15 @@ class Parse extends Command
     public function writeToCsv($content, $urlName) {
         $fileName = $this->getDomainName($urlName);
 
-        $fp = fopen(__DIR__ . '/../csv/' . $fileName . '.csv', 'w');
-
-//        fputcsv($fp, array_keys($this->allImages)); //uncomment if needs keys in csv
+        $filePath = dirname(__DIR__) . '/csv/';
+        $fp = fopen($filePath . $fileName . '.csv', 'w');
 
         foreach ($content as $fields) {
             fputcsv($fp, $fields);
         }
         fclose($fp);
 
-        echo "\n" . 'Csv file with result ' . __DIR__ . '/' . $fileName . '.csv' . "\n";
+        echo "\n" . 'Csv file with result ' . $filePath . $fileName . '.csv' . "\n";
 
     }
 

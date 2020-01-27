@@ -1,4 +1,5 @@
 <?php
+namespace src;
 
 
 class Report extends Command
@@ -18,8 +19,7 @@ class Report extends Command
         $fileName = $this->getDomainName($urlName);
 
         if (!file_exists(__DIR__ . '/../csv/' . $fileName . '.csv')) {
-            echo 'No such file in directory, check directory "csv" or parse this site.' . "\n";
-            return;
+            throw new \Exception('No such file in directory, check directory "csv" or parse this site.');
         }
         $csv = array_map('str_getcsv', file(__DIR__ . '/../csv/' . $fileName . '.csv'));
         print_r($csv);

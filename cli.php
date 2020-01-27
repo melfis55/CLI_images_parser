@@ -1,15 +1,14 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
 try {
     unset($argv[0]);
-    spl_autoload_register(function (string $className) {
-        @include_once __DIR__ . '/../src/' . $className . '.php';
-        });
 
-    $className = ucfirst(array_shift($argv));
+    $className = '\\src\\' . ucfirst(array_shift($argv));
 
     if (!class_exists($className)) {
-        throw new Exception('Command "' . $className . '" not found. Please write "php cli.php help" for check all commands.');
+        throw new \Exception('Command "' . $className . '" not found. Please write "php cli.php help" for check all commands.');
     }
 
     $params = [];
@@ -22,6 +21,7 @@ try {
             $params[$paramName] = $paramValue;
         }
     }
+
     $class = new $className($params);
     $class->execute();
 
